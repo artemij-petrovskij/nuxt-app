@@ -43,33 +43,41 @@ export default {
             trigger: "blur"
           },
           {
-            min: 2, message:'Пароль должен быть не менее 2-х символов', trigger: 'blur'
+            min: 2,
+            message: "Пароль должен быть не менее 2-х символов",
+            trigger: "blur"
           }
         ]
       }
     };
   },
+  mounted(){
+    const {message} = this.$route.query
+    if(message === '123'){
+      this.$message.info('Для начала войдите в систему')
+    }
+  },
   methods: {
     onSubmit() {
-      this.$refs.form.validate(valid =>{
-        if(valid){
-          this.loading = true
-            try{
-              const formData = {
-                login: this.controls.login,
-                password: this.controls.password
-              }
+      this.$refs.form.validate(async valid => {
+        if (valid) {
+          this.loading = true;
+          try {
+            const formData = {
+              login: this.controls.login,
+              password: this.controls.password
+            };
+            await this.$store.dispatch("auth/login", formData);
+            this.$router.push('/admin')
+          } catch (e) {
+            this.loading = false;
+          }
 
-            }catch (e){
-
-            }
-
-
- console.log("Submit");
-
+          console.log("Submit");
+        }else{
+          console.log("Not valid");
         }
-      })
-
+      });
     }
   }
 };
