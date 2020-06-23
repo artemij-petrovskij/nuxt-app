@@ -1,4 +1,6 @@
 <template>
+
+
   <el-card shadow="always" :style="{width:'500px'}">
     <el-form :model="controls" :rules="rules" ref="form" @submit.native.prevent="onSubmit">
       <h1>Вход</h1>
@@ -51,10 +53,13 @@ export default {
       }
     };
   },
-  mounted(){
-    const {message} = this.$route.query
-    if(message === '123'){
-      this.$message.info('Для начала войдите в систему')
+  mounted() {
+    const { message } = this.$route.query;
+    if (message === "login") {
+      this.$message.info("Для начала войдите в систему");
+    }
+    if (message === "logout") {
+      this.$message.info("Вы вышли из системы");
     }
   },
   methods: {
@@ -68,13 +73,13 @@ export default {
               password: this.controls.password
             };
             await this.$store.dispatch("auth/login", formData);
-            this.$router.push('/admin')
+            this.$router.push("/admin");
           } catch (e) {
             this.loading = false;
           }
 
           console.log("Submit");
-        }else{
+        } else {
           console.log("Not valid");
         }
       });
