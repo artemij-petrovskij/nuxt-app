@@ -15,7 +15,7 @@ export const mutations = {
 export const actions = {
   async login({ commit, dispatch }, formData) {
     try {
-      const { token } = await axios.post('http://localhost:3000/api/auth/admin/login', formData)
+      const { token } = await axios.post('/api/auth/admin/login', formData)
       dispatch('setToken', token)
       console.log('token', token)
     } catch (e) {
