@@ -1,6 +1,6 @@
 const axios = require('axios');
 export const state = () => ({
-  token: null
+  token: false
 })
 
 export const mutations = {
@@ -16,6 +16,17 @@ export const actions = {
   async login({ commit, dispatch }, formData) {
     try {
       const { token } = await axios.post('/api/auth/admin/login', formData)
+      commit('setToken', token)
+      console.log('token', token)
+    } catch (e) {
+      console.log(e)
+      throw e
+    }
+
+  },
+  async signup({ commit, dispatch }, formData) {
+    try {
+      const { token } = await axios.post('/api/auth/admin/signup', formData)
       dispatch('setToken', token)
       console.log('token', token)
     } catch (e) {
@@ -33,5 +44,6 @@ export const actions = {
 }
 
 export const getters = {
-  isAuthrnticated: state => Boolean(state.token)
+  isAuthenticated: state => !!state.token,
+  token: state => state.token
 }

@@ -1,7 +1,7 @@
 <template>
   <el-card shadow="always" :style="{width:'500px'}">
     <el-form :model="controls" :rules="rules" ref="form" @submit.native.prevent="onSubmit">
-      <h1>Вход</h1>
+      <h1>Регистрация</h1>
 
       <el-form-item label="Логин" prop="login">
         <el-input v-model.trim="controls.login"></el-input>
@@ -12,7 +12,7 @@
       </el-form-item>
 
       <el-form-item>
-        <el-button type="primary" native-type="submit" round :loading="submitted">Войти</el-button>
+        <el-button type="primary" native-type="submit" round :loading="loading">Зарегистрироваться</el-button>
       </el-form-item>
     </el-form>
   </el-card>
@@ -23,7 +23,7 @@ export default {
   layout: "empty",
   data() {
     return {
-      submitted : false,
+      loading: false,
       controls: {
         login: "",
         password: ""
@@ -64,19 +64,16 @@ export default {
     onSubmit() {
       this.$refs.form.validate(async valid => {
         if (valid) {
-          this.submitted  = true;
+          this.loading = true;
           try {
             const formData = {
               login: this.controls.login,
               password: this.controls.password
             };
-            await this.$store.dispatch("auth/login", {
-              login: this.controls.login,
-              password: this.controls.password
-            });
+            await this.$store.dispatch("auth/signup", formData);
             this.$router.push("/admin");
           } catch (e) {
-            this.submitted  = false;
+            this.loading = false;
           }
 
           console.log("Submit");
