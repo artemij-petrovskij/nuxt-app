@@ -13,30 +13,33 @@ export const mutations = {
 }
 
 export const actions = {
-  async login({ commit, dispatch }, formData) {
-    try {
-      const { token } = await axios.post('/api/auth/admin/login', formData)
-      commit('setToken', token)
-      console.log('token', token)
-    } catch (e) {
-      console.log(e)
-      throw e
-    }
+  async login({dispatch, commit}, formData) {
 
+      await axios.post('/api/auth/admin/login', formData)
+      .then(function (response) {
+        dispatch('setToken', response.data.token)
+
+      })
+      .catch(function (error) {
+        commit('setError', error, {root: true})
+        throw error
+      });
   },
   async signup({ commit, dispatch }, formData) {
-    try {
-      const { token } = await axios.post('/api/auth/admin/signup', formData)
-      dispatch('setToken', token)
-      console.log('token', token)
-    } catch (e) {
-      console.log(e)
-      throw e
-    }
+    await axios.post('/api/auth/admin/signup', formData)
+      .then(function (response) {
+        dispatch('setToken', response.data.token)
+
+      })
+      .catch(function (error) {
+        commit('setError', error, {root: true})
+        throw error
+      });
 
   },
   setToken({ commit }, token) {
     commit('setToken', token)
+
   },
   logout({ commit }) {
     commit('clearToken')

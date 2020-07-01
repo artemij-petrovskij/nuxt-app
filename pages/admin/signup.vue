@@ -76,9 +76,8 @@ export default {
             this.loading = false;
           }
 
-          console.log("Submit");
         } else {
-          console.log("Not valid");
+
         }
       });
     }
