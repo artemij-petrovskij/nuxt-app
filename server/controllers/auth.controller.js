@@ -30,7 +30,7 @@ module.exports.signup = async(req, res) => {
   const candidate = await User.findOne({ login: req.body.login })
 
   if (candidate) {
-    res.status(409).json({ message: 'Такой логин уже занят' })
+    res.status(409).json({ message: 'Пользователь с таким логином уже существует' })
   } else {
     const salt = bcrypt.genSaltSync(10)
     const user = new User({
